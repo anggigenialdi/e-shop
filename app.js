@@ -4,9 +4,11 @@ const morgan                = require('morgan');
 
 const mongoose  = require("mongoose");
 const dotenv    = require("dotenv")
+const cors      = require("cors");
 
-//* Call Routes
-const productRoutes = require('./src/routes/product');
+app.use(cors());
+app.options("*", cors());
+
 
 dotenv.config();
 app.use(express.json());
@@ -14,11 +16,19 @@ app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 
 
+//* Call Routes
+const categoriesRoutes  = require('./src/routes/categories');
+const productsRoutes    = require('./src/routes/product');
+const usersRoutes       = require('./src/routes/users');
+const ordersRoutes      = require('./src/routes/orders');
 
 //End Point Router
 const api = process.env.API_URL;
-app.use(`${api}`, productRoutes);
 
+app.use(`${api}/categories`, categoriesRoutes);
+app.use(`${api}/products`, productsRoutes);
+app.use(`${api}/users`, usersRoutes);
+app.use(`${api}/orders`, ordersRoutes);
 
 
 const port = 3003;
